@@ -18,19 +18,20 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH }}
           submodules: true
-      # 安装使用 node:12
-      - name: use Node.js 12
+      # 安装使用 node:16
+      - name: use Node.js 16
         uses: actions/setup-node@v1
         with:
-          node-version: 12
-      # 运行命令，npm install && npm run build
-      - name: npm install and build
-        run: |
-          npm install
-          npm run build
-          npm run docs:build
-        env:
-          CI: true
+          node-version: 16
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build # will run `yarn build` command
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: docs:build # will run `yarn test` command
       # 部署到腾讯云服务器
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.2.11
